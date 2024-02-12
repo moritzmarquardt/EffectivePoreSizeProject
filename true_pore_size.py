@@ -1,6 +1,6 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import MDAnalysis as mda
+import matplotlib.pyplot as plt 
+import MDAnalysis as mda 
 import time
 
 start = time.time()
@@ -12,7 +12,7 @@ start = time.time()
 # So, when you read a .gro or .xtc file with MDAnalysis, the coordinates are automatically converted from nanometers to Angstroms. 
 
 # u = mda.Universe('/bigpool/users/st166545/TPS/240130kri_new_sim/traj_firstframe.gro', '/bigpool/users/st166545/TPS/240130kri_new_sim/traj.xtc')
-u = mda.Universe('/bigpool/users/st166545/TPS/4nm/topol.tpr', '/bigpool/users/st166545/TPS/4nm/traj.xtc')
+u = mda.Universe('/bigpool/users/st166545/EffectivePoreSizeProject/simdata/4nm/topol.tpr', '/bigpool/users/st166545/EffectivePoreSizeProject/simdata/4nm/traj.xtc')
 # u = mda.Universe('/bigpool/data/projects/Carbon_pores_Sofia/kri_with_vacuum_test/hex_18_3_2_n_vacuum/simulation_1/topol.tpr', '/bigpool/users/st166545/TPS/kri_with_vacuum_test_skip10.xtc')
 print(u)
 print("timeframes analysed: " + str(u.trajectory.n_frames))
