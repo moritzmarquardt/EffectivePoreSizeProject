@@ -37,5 +37,6 @@ However, this does not support the plotting of interactive plots from pyplot. Th
 To solve this, either the plots can be saved to png files or:
 Log into the workstation via ssh from the ubuntu subsystem for windows using this command:
 ssh -Y st166545@129.69.167.51 (this forwards the graphics to the local machine). This makes it possible to view the interactive windows.
+This x11 forwarding with the -Y command only works when connecting to ssh via the linux subsystem. When trying to connect via ssh with -Y from the windows powershell, he forwording does not work
 
 The whole project folder is synced with a github repository using the vs coode extension.
