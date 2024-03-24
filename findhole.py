@@ -41,16 +41,16 @@ filtered_positions_mem = np.load("filtered_positions_mem.npy")
 filtered_positions_sol = np.load("filtered_positions_sol.npy")
 
 
-kde_mem = gaussian_kde(filtered_positions_mem[::100,:].T)
-kde_sol = gaussian_kde(filtered_positions_sol[::100,:].T)
+kde_mem = gaussian_kde(filtered_positions_mem[::50,:].T)
+kde_sol = gaussian_kde(filtered_positions_sol[::50,:].T)
 
 # Evaluate the KDE on a grid
 xmin = min(filtered_positions_mem[:, 0])
 xmax = max(filtered_positions_mem[:, 0])
-xn = int(np.ceil(xmax - xmin))
+xn = 100
 ymin = min(filtered_positions_mem[:, 1])
 ymax = max(filtered_positions_mem[:, 1])
-yn = int(np.ceil(xn * (ymax - ymin) / (xmax - xmin)))
+yn = 100
 x = np.linspace(xmin, xmax, xn)
 y = np.linspace(ymin, ymax, yn)
 X, Y = np.meshgrid(x, y)
@@ -59,36 +59,11 @@ Z_sol = np.reshape(kde_sol([X.ravel(), Y.ravel()]), X.shape)
 Z_sol_norm = Z_sol / np.max(Z_sol)
 Z_mem_norm = Z_mem / np.max(Z_mem)
 Z = Z_mem_norm + Z_sol_norm
-Z2 = np.abs(Z_mem_norm - Z_sol_norm)
-
-'''plt.figure()
+plt.figure()
 plt.pcolormesh(X, Y, Z, shading='gouraud')
 plt.colorbar()
-plt.axis('equal')'''
-
-
-plt.figure()
-Z_8bit = cv2.normalize(Z2, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
-canny = cv2.Canny(Z_8bit,10,200)
-plt.imshow(canny)
-circle = None
-approx_radius = 10
-circles = cv2.HoughCircles(canny, cv2.HOUGH_GRADIENT, dp=1, minDist=50, param1=10, param2 = 10, minRadius=approx_radius-3, maxRadius=approx_radius+3)
-print(circles)
-circle = circles[0][0]
-if circle is not None:
-    c = plt.Circle((circle[0], circle[1]), circle[2], color='red', fill=False)
-    plt.gca().add_artist(c)
-
-
-
-plt.figure()
-plt.pcolormesh(X, Y, Z2, shading='gouraud')
-plt.colorbar()
 plt.axis('equal')
-if circle is not None:
-    c = plt.Circle((circle[0], circle[1]), circle[2], color='red', fill=False)
-    plt.gca().add_artist(c)
+
 
 plt.show()
 
