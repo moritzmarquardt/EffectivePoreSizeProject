@@ -3,7 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 from scipy.stats import gaussian_kde
+from scipy.integrate import quad
 from skimage.measure import CircleModel, ransac
+from scipy.optimize import minimize
 
 '''path = "/bigpool/data/projects/Carbon_pores_Sofia/correctdensity/hex_NVT/2nm_NVT/"
 
@@ -47,10 +49,10 @@ kde_sol = gaussian_kde(filtered_positions_sol[::50,:].T)
 # Evaluate the KDE on a grid
 xmin = min(filtered_positions_mem[:, 0])
 xmax = max(filtered_positions_mem[:, 0])
-xn = 100
+xn = 130
 ymin = min(filtered_positions_mem[:, 1])
 ymax = max(filtered_positions_mem[:, 1])
-yn = 100
+yn = 130
 x = np.linspace(xmin, xmax, xn)
 y = np.linspace(ymin, ymax, yn)
 X, Y = np.meshgrid(x, y)
@@ -63,9 +65,48 @@ plt.figure()
 plt.pcolormesh(X, Y, Z, shading='gouraud')
 plt.colorbar()
 plt.axis('equal')
-
-
+circle = plt.Circle(( 52.15263431407999, 35.363587046235615), 12.004503111616609, color='red', fill=False)
+plt.gca().add_artist(circle)
+plt.plot(52.15263431407999, 35.363587046235615, 'rx')
 plt.show()
+
+
+def F(x,y):
+    return np.abs(kde_mem([x,y]) - kde_sol([x,y]))
+
+def circle_integral(m_x,m_y,r):
+    def integrand(theta):
+        x = m_x + r * np.cos(theta)
+        y = m_y + r * np.sin(theta)
+        return F(x, y)
+
+    # Integrate over theta from 0 to 2*pi
+    integral, error = quad(integrand, 0, 2*np.pi)
+    return integral
+
+# Initial guess for m_x, m_y, and r
+initial_guess = [50, 35, 10]
+
+# Bounds for m_x, m_y, and r
+bounds = [(45, 55), (30, 40), (7, 13)]
+
+# Define the function to be minimized
+def objective(params):
+    m_x, m_y, r = params
+    return circle_integral(m_x, m_y, r)
+
+print("lets minimize")
+# Perform the optimization
+result = minimize(objective, initial_guess, bounds=bounds) 
+
+# Extract the optimal parameters
+m_x_opt, m_y_opt, r_opt = result.x
+
+print("Optimal m_x:", m_x_opt)
+print("Optimal m_y:", m_y_opt)
+print("Optimal r:", r_opt)
+
+
 
 
 """# Calculate the range of the x and y data
