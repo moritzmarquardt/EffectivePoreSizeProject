@@ -16,5 +16,6 @@ Analysis = EPSA.EffectivePoreSizeAnalysis(
             verbose = True
         )
 
-Analysis.analyseDensity()
+# Analysis.analyseDensity()
+Analysis.analyseDensityNormalised()
 plt.show()
