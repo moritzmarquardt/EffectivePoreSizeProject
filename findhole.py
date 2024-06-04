@@ -43,16 +43,16 @@ filtered_positions_mem = np.load("filtered_positions_mem.npy")
 filtered_positions_sol = np.load("filtered_positions_sol.npy")
 
 
-kde_mem = gaussian_kde(filtered_positions_mem[::50,:].T)
-kde_sol = gaussian_kde(filtered_positions_sol[::50,:].T)
+kde_mem = gaussian_kde(filtered_positions_mem[::500,:].T)
+kde_sol = gaussian_kde(filtered_positions_sol[::500,:].T)
 
 # Evaluate the KDE on a grid
 xmin = min(filtered_positions_mem[:, 0])
 xmax = max(filtered_positions_mem[:, 0])
-xn = 130
+xn = 100
 ymin = min(filtered_positions_mem[:, 1])
 ymax = max(filtered_positions_mem[:, 1])
-yn = 130
+yn = 100
 x = np.linspace(xmin, xmax, xn)
 y = np.linspace(ymin, ymax, yn)
 X, Y = np.meshgrid(x, y)
