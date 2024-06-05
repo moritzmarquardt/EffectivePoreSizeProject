@@ -1,5 +1,9 @@
 import MembraneAnalysisToolbox.EffectivePoreSizeAnalysis as mat
 
+'''
+this file is for testing and development purposes only
+'''
+
 path = "/bigpool/data/projects/Carbon_pores_Sofia/correctdensity/hex/3nm_1musonly/simulation_1/" # diff pore sizes directory, ymiddle 40
 # path = "/bigpool/data/projects/Carbon_pores_Sofia/correctdensity/cubic/3nm/simulation_1/" 
 
