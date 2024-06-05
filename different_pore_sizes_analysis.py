@@ -3,6 +3,8 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 
+# this script is hardcoded to analyse the four poresizes in the hex structure
+
 start = time.time()
 
 characteristics_2nm = {
