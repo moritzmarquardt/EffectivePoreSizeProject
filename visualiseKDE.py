@@ -1,24 +1,29 @@
 import MembraneAnalysisToolbox.EffectivePoreSizeAnalysis as EPSA
-import numpy as np
 import matplotlib.pyplot as plt
-from scipy.stats import gaussian_kde
+import os
 
-for i in [2]:
 
-    # path = "/bigpool/users/ac130484/project/finished_sim/hex/poresize" + str(i) + "nm_NVT/"
-    path = "/bigpool/data/projects/Carbon_pores_Sofia/correctdensity/hex_NVT/" + str(i) + "nm_NVT/"
-    sim = 1
+# Ask for the paths from the user
+path = input("Enter the path to the folder containing topol.tpr and traj.xtc files: ")
 
-    Analysis = EPSA.EffectivePoreSizeAnalysis(
-                topology_file = path + 'simulation_' + str(sim) + '/' + 'topol.tpr',
-                trajectory_file = path + 'EPS_analysis/' + 'traj_simulation_' + str(sim) + '.xtc',
-                membrane_resnames = ['C'],
-                solvent_resnames = ['HEX', 'DOD'],
-                y_middle = 35,
-                y_range = 10,
-                verbose = True
-            )
+# Check if topol.tpr and traj.xtc files exist in the entered path
+while not os.path.exists(path + "topol.tpr") or not os.path.exists(path + "traj.xtc"):
+    print("topol.tpr or traj.xtc file not found in the specified path. Please try again.")
+    path = input("Enter the path to the folder containing topol.tpr and traj.xtc files: ")
 
-    # Analysis.analyseDensity()
-    Analysis.analyseDensityNormalised()
+resnames = input("Enter the resnames of the solvent molecules that should be analysed separated by a space (ex.: HEX DOD): ").split()
+print("Entered resnames: ", resnames)
+
+Analysis = EPSA.EffectivePoreSizeAnalysis(
+            topology_file = path + 'topol.tpr',
+            trajectory_file = path + 'traj.xtc',
+            membrane_resnames = ['C'],
+            solvent_resnames = resnames,
+            y_middle = 35,
+            y_range = 10,
+            verbose = True
+        )
+
+# Analysis.analyseDensity()
+Analysis.analyseDensityNormalised()
 plt.show()
